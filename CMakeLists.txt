@@ -3,7 +3,7 @@ include(FetchContent)
 
 project(VEngine)
 
-set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD 23)
 
 # Vulkan
 find_package(Vulkan REQUIRED FATAL_ERROR)
