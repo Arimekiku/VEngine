@@ -22,13 +22,13 @@ namespace VEngine
 	{
 		const auto instance = VulkanScope::GetInstance();
 
-		const auto vkCreateDebugUtilsMessengerExt = (PFN_vkCreateDebugUtilsMessengerEXT)vkGetInstanceProcAddr(instance, "vkCreateDebugUtilsMessengerEXT");
 		VkDebugUtilsMessengerCreateInfoEXT debugUtilsCreateInfo{};
 		debugUtilsCreateInfo.sType = VK_STRUCTURE_TYPE_DEBUG_UTILS_MESSENGER_CREATE_INFO_EXT;
 		debugUtilsCreateInfo.messageType = VK_DEBUG_UTILS_MESSAGE_TYPE_GENERAL_BIT_EXT | VK_DEBUG_UTILS_MESSAGE_TYPE_VALIDATION_BIT_EXT | VK_DEBUG_UTILS_MESSAGE_TYPE_PERFORMANCE_BIT_EXT;
 		debugUtilsCreateInfo.pfnUserCallback = VulkanCallback;
 		debugUtilsCreateInfo.messageSeverity = VK_DEBUG_UTILS_MESSAGE_SEVERITY_WARNING_BIT_EXT | VK_DEBUG_UTILS_MESSAGE_SEVERITY_ERROR_BIT_EXT;
 
+		const auto vkCreateDebugUtilsMessengerExt = (PFN_vkCreateDebugUtilsMessengerEXT)vkGetInstanceProcAddr(instance, "vkCreateDebugUtilsMessengerEXT");
 		VULKAN_CHECK(vkCreateDebugUtilsMessengerExt(instance, &debugUtilsCreateInfo, nullptr, &m_debugMessenger));
 	}
 
@@ -38,7 +38,7 @@ namespace VEngine
 
 		auto vkDestroyDebugUtilsMessengerEXT = (PFN_vkDestroyDebugUtilsMessengerEXT)vkGetInstanceProcAddr(instance, "vkDestroyDebugUtilsMessengerEXT");
 		vkDestroyDebugUtilsMessengerEXT(instance, m_debugMessenger, nullptr);
-		m_debugMessenger = nullptr;
+		m_debugMessenger = VK_NULL_HANDLE;
 	}
 
 	VulkanDebugger::~VulkanDebugger()

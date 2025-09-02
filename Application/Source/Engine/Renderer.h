@@ -1,5 +1,7 @@
 #pragma once
 
+#include <GLFW/glfw3.h>
+
 #include "VulkanScope.h"
 
 namespace VEngine 
@@ -16,7 +18,7 @@ namespace VEngine
 		void Update();
 		void Shutdown();
 
-		inline bool IsRunning() const { return m_isRunning; }
+		bool IsRunning() const { return m_isRunning; }
 
 	private:
 		bool m_isRunning = true;

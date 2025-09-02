@@ -1,9 +1,7 @@
 #pragma once
 
-#define GLFW_INCLUDE_VULKAN
-#include <memory>
-#include <GLFW/glfw3.h>
 #include "VulkanDebugger.h"
+#include "VulkanDevice.h"
 
 namespace VEngine 
 {
@@ -20,6 +18,9 @@ namespace VEngine
 		static VkInstance GetInstance() { return s_instance; }
 
 	private:
+		std::shared_ptr<VulkanPhysicalDevice> m_physicalDevice = nullptr;
+		std::shared_ptr<VulkanLogicalDevice> m_logicalDevice = nullptr;
+
 		inline static VkInstance s_instance = nullptr;
 		inline static std::unique_ptr<VulkanDebugger> m_debugger = nullptr;
 	};

@@ -6,8 +6,9 @@ file(GLOB_RECURSE HEADER_FILES "${SOURCE_DIR}/**.h")
 # define source
 file(GLOB_RECURSE SOURCE_FILES "${SOURCE_DIR}/**.cpp")
 
-# Add the executable target
+# add the executable target
 add_executable(VEngine ${HEADER_FILES} ${SOURCE_FILES})
+add_compile_definitions(GLFW_INCLUDE_VULKAN)
 
 target_link_libraries(VEngine glfw)
 target_link_libraries(VEngine glm)
