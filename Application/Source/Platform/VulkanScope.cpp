@@ -6,13 +6,6 @@
 
 namespace VEngine
 {
-	static VKAPI_ATTR VkBool32 VKAPI_CALL VulkanCallback(VkDebugUtilsMessageSeverityFlagBitsEXT messageSeverity, VkDebugUtilsMessageTypeFlagsEXT messageType, const VkDebugUtilsMessengerCallbackDataEXT* pCallbackData, void* pUserData)
-	{
-		std::println("Validation: {}", pCallbackData->pMessage);
-
-		return VK_FALSE;
-	}
-
 	void VulkanScope::Initialize()
 	{
 		if (s_instance != nullptr)
@@ -80,23 +73,13 @@ namespace VEngine
 		}
 
 		// Create Instance
-		auto result = vkCreateInstance(&createInfo, nullptr, &s_instance);
-		if (result != VK_SUCCESS)
-			throw std::runtime_error("failed to create instance!");
+		VULKAN_CHECK(vkCreateInstance(&createInfo, nullptr, &s_instance));
 
 		if (validationLayerPresent == false)
 			return;
 
-		auto vkCreateDebugUtilsMessengerEXT = (PFN_vkCreateDebugUtilsMessengerEXT)vkGetInstanceProcAddr(s_instance, "vkCreateDebugUtilsMessengerEXT");
-		VkDebugUtilsMessengerCreateInfoEXT debugUtilsCreateInfo{};
-		debugUtilsCreateInfo.sType = VK_STRUCTURE_TYPE_DEBUG_UTILS_MESSENGER_CREATE_INFO_EXT;
-		debugUtilsCreateInfo.messageType = VK_DEBUG_UTILS_MESSAGE_TYPE_GENERAL_BIT_EXT | VK_DEBUG_UTILS_MESSAGE_TYPE_VALIDATION_BIT_EXT | VK_DEBUG_UTILS_MESSAGE_TYPE_PERFORMANCE_BIT_EXT;
-		debugUtilsCreateInfo.pfnUserCallback = VulkanCallback;
-		debugUtilsCreateInfo.messageSeverity = VK_DEBUG_UTILS_MESSAGE_SEVERITY_WARNING_BIT_EXT | VK_DEBUG_UTILS_MESSAGE_SEVERITY_ERROR_BIT_EXT;
-
-		result = vkCreateDebugUtilsMessengerEXT(s_instance, &debugUtilsCreateInfo, nullptr, &m_debugUtilsMessenger);
-		if (result != VK_SUCCESS)
-			throw std::runtime_error("failed to create instance!");
+		m_debugger = std::make_unique<VulkanDebugger>();
+		m_debugger->SetupDebugMessenger();
 	}
 
 	VulkanScope::~VulkanScope()
@@ -104,10 +87,10 @@ namespace VEngine
 		if (s_instance == nullptr)
 			return;
 
-		if (m_debugUtilsMessenger != nullptr)
+		if (m_debugger)
 		{
-			auto vkDestroyDebugUtilsMessengerEXT = (PFN_vkDestroyDebugUtilsMessengerEXT)vkGetInstanceProcAddr(s_instance, "vkDestroyDebugUtilsMessengerEXT");
-			vkDestroyDebugUtilsMessengerEXT(s_instance, m_debugUtilsMessenger, nullptr);
+			m_debugger->DestroyDebugMessenger();
+			m_debugger = nullptr;
 		}
 
 		vkDestroyInstance(s_instance, nullptr);

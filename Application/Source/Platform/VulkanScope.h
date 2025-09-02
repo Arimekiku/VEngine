@@ -1,7 +1,9 @@
 #pragma once
 
 #define GLFW_INCLUDE_VULKAN
+#include <memory>
 #include <GLFW/glfw3.h>
+#include "VulkanDebugger.h"
 
 namespace VEngine 
 {
@@ -19,7 +21,6 @@ namespace VEngine
 
 	private:
 		inline static VkInstance s_instance = nullptr;
-
-		VkDebugUtilsMessengerEXT m_debugUtilsMessenger = nullptr;
+		inline static std::unique_ptr<VulkanDebugger> m_debugger = nullptr;
 	};
 }
