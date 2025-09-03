@@ -50,6 +50,7 @@ namespace VEngine
 		const std::shared_ptr<VulkanPhysicalDevice>& GetPhysicalDevice() const { return m_physicalDevice; }
 
 		const VkDevice& GetDevice() const { return m_logicalDevice; }
+		const VkQueue& GetGraphicsQueue() const { return m_graphicsQueue; }
 
 	private:
 		VkDevice m_logicalDevice = nullptr;

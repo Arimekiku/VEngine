@@ -2,6 +2,7 @@
 
 #include <GLFW/glfw3.h>
 
+#include "VulkanPipeline.h"
 #include "VulkanScope.h"
 #include "VulkanSwapChain.h"
 
@@ -21,12 +22,15 @@ namespace VEngine
 
 		bool IsRunning() const { return m_isRunning; }
 
+		static VulkanScope& GetScope() { return m_scope; }
+
 	private:
 		bool m_isRunning = true;
 
-		VulkanScope m_scope;
+		inline static VulkanScope m_scope;
 
 		std::shared_ptr<VulkanSwapChain> m_swapChain = nullptr;
+		std::shared_ptr<VulkanPipeline> m_testPipeline = nullptr;
 		GLFWwindow* m_window = nullptr;
 	};
 }

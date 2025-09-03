@@ -50,6 +50,7 @@ namespace VEngine
 				m_supportedExtensions.emplace(extensionName);
 				std::println("{}", extensionName);
 			}
+			std::println();
 		}
 
 		// Setup Queue Families

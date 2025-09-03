@@ -15,10 +15,9 @@ namespace VEngine
 
 		void Initialize();
 
-		std::shared_ptr<VulkanLogicalDevice>& GetVulkanDevice() { return m_logicalDevice; }
+		const std::shared_ptr<VulkanLogicalDevice>& GetVulkanDevice() { return m_logicalDevice; }
 
 		static VkInstance GetVulkanInstance() { return s_instance; }
-
 	private:
 		std::shared_ptr<VulkanPhysicalDevice> m_physicalDevice = nullptr;
 		std::shared_ptr<VulkanLogicalDevice> m_logicalDevice = nullptr;
