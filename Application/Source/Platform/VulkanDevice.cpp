@@ -7,7 +7,7 @@ namespace VEngine
 {
 	VulkanPhysicalDevice::VulkanPhysicalDevice()
 	{
-		const auto instance = VulkanScope::GetInstance();
+		const auto instance = VulkanScope::GetVulkanInstance();
 
 		// Find Discrete GPU
 		uint32_t gpuCount = 0;
@@ -38,12 +38,13 @@ namespace VEngine
 		vkGetPhysicalDeviceMemoryProperties(m_physicalDevice, &m_deviceMemoryProperties);
 
 		uint32_t extCount = 0;
-		auto extensions = std::vector<VkExtensionProperties>();
-
 		VULKAN_CHECK(vkEnumerateDeviceExtensionProperties(m_physicalDevice, nullptr, &extCount, nullptr));
+		auto extensions = std::vector<VkExtensionProperties>(extCount);
+		vkEnumerateDeviceExtensionProperties(m_physicalDevice, nullptr, &extCount, extensions.data());
+
 		if (extCount > 0)
 		{
-			std::println("Selected physical device has {} extensions.\n", extensions.size());
+			std::println("Selected physical device has {} extensions.\n", extCount);
 			for (const auto& [extensionName, _] : extensions)
 			{
 				m_supportedExtensions.emplace(extensionName);
@@ -96,13 +97,20 @@ namespace VEngine
 		m_physicalDevice = physicalDevice;
 		const auto qInfos = m_physicalDevice->GetQueueFamilyInfos();
 
+		std::vector deviceExtensions =
+		{
+			VK_KHR_SWAPCHAIN_EXTENSION_NAME
+		};
+
 		auto createInfo = VkDeviceCreateInfo();
 		createInfo.sType = VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO;
 		createInfo.pQueueCreateInfos = qInfos.data();
 		createInfo.queueCreateInfoCount = (uint32_t)qInfos.size();
 		createInfo.pEnabledFeatures = &physicalDevice->GetFeatures();
+		createInfo.enabledExtensionCount = (uint32_t)deviceExtensions.size();
+		createInfo.ppEnabledExtensionNames = deviceExtensions.data();
 
-		VULKAN_CHECK(vkCreateDevice(physicalDevice->GetPhysicalDevice(), &createInfo, nullptr, &m_logicalDevice));
+		VULKAN_CHECK(vkCreateDevice(physicalDevice->GetDevice(), &createInfo, nullptr, &m_logicalDevice));
 
 		const auto graphicsFamilyIndex = physicalDevice->GetQueueFamilyIndices().GraphicsFamily;
 		if (graphicsFamilyIndex.has_value() == false)

@@ -15,6 +15,7 @@ namespace VEngine
 
 		m_scope.Initialize();
 		m_window = glfwCreateWindow(800, 600, "Vulkan Window", nullptr, nullptr);
+		m_swapChain = std::make_shared<VulkanSwapChain>(m_scope.GetVulkanDevice(), m_window);
 
 		glm::mat4 matrix;
 		glm::vec4 vec;
@@ -30,6 +31,8 @@ namespace VEngine
 
 	void Renderer::Shutdown()
 	{
+		m_swapChain = nullptr;
+
 		glfwDestroyWindow(m_window);
 
 		glfwTerminate();

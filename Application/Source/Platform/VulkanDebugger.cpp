@@ -20,7 +20,7 @@ namespace VEngine
 
 	void VulkanDebugger::SetupDebugMessenger()
 	{
-		const auto instance = VulkanScope::GetInstance();
+		const auto instance = VulkanScope::GetVulkanInstance();
 
 		VkDebugUtilsMessengerCreateInfoEXT debugUtilsCreateInfo{};
 		debugUtilsCreateInfo.sType = VK_STRUCTURE_TYPE_DEBUG_UTILS_MESSENGER_CREATE_INFO_EXT;
@@ -34,11 +34,11 @@ namespace VEngine
 
 	void VulkanDebugger::DestroyDebugMessenger()
 	{
-		const auto instance = VulkanScope::GetInstance();
+		const auto instance = VulkanScope::GetVulkanInstance();
 
 		auto vkDestroyDebugUtilsMessengerEXT = (PFN_vkDestroyDebugUtilsMessengerEXT)vkGetInstanceProcAddr(instance, "vkDestroyDebugUtilsMessengerEXT");
 		vkDestroyDebugUtilsMessengerEXT(instance, m_debugMessenger, nullptr);
-		m_debugMessenger = VK_NULL_HANDLE;
+		m_debugMessenger = nullptr;
 	}
 
 	VulkanDebugger::~VulkanDebugger()

@@ -1,8 +1,8 @@
 #pragma once
 
-#include <stdexcept>
-#include <string>
+#include <print>
 #include <vulkan/vulkan_core.h>
+#include <vulkan/vk_enum_string_helper.h>
 
 namespace VEngine 
 {
@@ -22,7 +22,7 @@ namespace VEngine
 			if (result == VK_SUCCESS || result == VK_INCOMPLETE)
 				return;
 
-			throw std::runtime_error("Vulkan error: " + std::to_string(result));
+			std::print("Vulkan error: {}", std::to_string(result));
 		}
 
 	private:

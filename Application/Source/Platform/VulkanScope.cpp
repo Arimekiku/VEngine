@@ -3,6 +3,8 @@
 #include <print>
 #include <vector>
 
+#include "GLFW/glfw3.h"
+
 namespace VEngine
 {
 	void VulkanScope::Initialize()
@@ -18,11 +20,13 @@ namespace VEngine
 		appInfo.apiVersion = VK_API_VERSION_1_2;
 
 		// Setup Vulkan Instance
-		const std::vector extensions = 
-		{
-			VK_KHR_SURFACE_EXTENSION_NAME, VK_EXT_DEBUG_UTILS_EXTENSION_NAME,
-			VK_EXT_DEBUG_REPORT_EXTENSION_NAME, VK_KHR_GET_PHYSICAL_DEVICE_PROPERTIES_2_EXTENSION_NAME,
-		};
+		uint32_t extCount = 0;
+		const char** exts = glfwGetRequiredInstanceExtensions(&extCount);
+
+		auto extensions = std::vector(exts, exts + extCount);
+		extensions.push_back(VK_EXT_DEBUG_UTILS_EXTENSION_NAME);
+		extensions.push_back(VK_EXT_DEBUG_REPORT_EXTENSION_NAME);
+		extensions.push_back(VK_KHR_GET_PHYSICAL_DEVICE_PROPERTIES_2_EXTENSION_NAME);
 
 		constexpr VkValidationFeatureEnableEXT validationFeatures[] = { VK_VALIDATION_FEATURE_ENABLE_BEST_PRACTICES_EXT };
 		auto features = VkValidationFeaturesEXT();

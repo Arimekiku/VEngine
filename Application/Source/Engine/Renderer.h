@@ -3,6 +3,7 @@
 #include <GLFW/glfw3.h>
 
 #include "VulkanScope.h"
+#include "VulkanSwapChain.h"
 
 namespace VEngine 
 {
@@ -25,6 +26,7 @@ namespace VEngine
 
 		VulkanScope m_scope;
 
+		std::shared_ptr<VulkanSwapChain> m_swapChain = nullptr;
 		GLFWwindow* m_window = nullptr;
 	};
 }

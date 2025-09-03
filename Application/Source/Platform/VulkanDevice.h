@@ -20,7 +20,7 @@ namespace VEngine
 		VulkanPhysicalDevice();
 		~VulkanPhysicalDevice();
 
-		const VkPhysicalDevice& GetPhysicalDevice() const { return m_physicalDevice; }
+		const VkPhysicalDevice& GetDevice() const { return m_physicalDevice; }
 		const VkPhysicalDeviceFeatures& GetFeatures() const { return m_deviceFeatures; }
 
 		QueueFamilyIndices& GetQueueFamilyIndices() { return m_queueFamilyIndices; }
@@ -46,6 +46,10 @@ namespace VEngine
 	public:
 		VulkanLogicalDevice(const std::shared_ptr<VulkanPhysicalDevice>& physicalDevice);
 		~VulkanLogicalDevice();
+
+		const std::shared_ptr<VulkanPhysicalDevice>& GetPhysicalDevice() const { return m_physicalDevice; }
+
+		const VkDevice& GetDevice() const { return m_logicalDevice; }
 
 	private:
 		VkDevice m_logicalDevice = nullptr;
